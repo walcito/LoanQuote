@@ -62,6 +62,7 @@ $(document).ready(function () {
   const generatedQuoteContainer = $("#generated-quote-container");
 
   let extraRowCounter = 0;
+  let hasAttemptedSubmit = false;
 
   function GetNumber(input) {
     const value = parseFloat(input.val());
@@ -212,6 +213,9 @@ $(document).ready(function () {
   checkApplyInsurance.on("change", function () {
     if ($(this).is(":checked")) {
       inputMonthlyInsuranceRate.prop("disabled", false).focus();
+      if (hasAttemptedSubmit) {
+        ValidateInsuranceRate();
+      }
     } else {
       inputMonthlyInsuranceRate.val("").prop("disabled", true);
       HideError(inputMonthlyInsuranceRate);
@@ -1165,11 +1169,13 @@ $(document).ready(function () {
 
     extraPaymentsContainer.empty();
     extraRowCounter = 0;
+    hasAttemptedSubmit = false;
 
     UpdateEngineAndSummary();
   }
 
   buttonGenerateQuote.on("click", function () {
+    hasAttemptedSubmit = true;
     if (Validate()) {
       const engine = CalculateEngine();
       if (!engine.isValid || engine.schedule.length === 0) {
