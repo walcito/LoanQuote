@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LoanQuote</title>
+    <link rel="stylesheet" href="assets/css/lib/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/site/main.css" />
+    <link rel="stylesheet" href="assets/css/lib/toastr/toastr.min.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar bg-body-tertiary" data-bs-theme="dark">
+        <div class="container">
+          <span class="navbar-brand">LoanQuote</span>
+          <span class="navbar-text">Cotizador y plan de pagos</span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container mt-4 mb-4">
+      <form id="loan-form" novalidate>
+        <div class="card main-form-card mb-4">
+          <div class="card-header bg-primary text-light py-3">
+            <h1 class="h4 mb-0 fw-bold">Cotizador de Préstamos</h1>
+          </div>
+          <div class="card-body p-4">
+            <section class="form-section mb-4">
+              <h2 class="section-title">1. Datos de la entidad financiera</h2>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="entity-name" class="form-label">Nombre de la entidad *</label>
+                  <input id="entity-name" class="form-control" type="text" placeholder="Banco Popular Dominicano" />
+                  <div id="entity-name-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="entity-rnc" class="form-label">RNC o identificación *</label>
+                  <input id="entity-rnc" class="form-control" type="text" placeholder="101000001" />
+                  <div id="entity-rnc-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="entity-phone" class="form-label">Teléfono *</label>
+                  <input id="entity-phone" class="form-control" type="text" placeholder="809-555-0100" />
+                  <div id="entity-phone-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="entity-email" class="form-label">Correo electrónico *</label>
+                  <input id="entity-email" class="form-control" type="email" placeholder="contacto@banco.com" />
+                  <div id="entity-email-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="entity-address" class="form-label">Dirección *</label>
+                  <input id="entity-address" class="form-control" type="text" placeholder="Av. 27 de Febrero esq. Winston Churchill" />
+                  <div id="entity-address-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="entity-logo" class="form-label">URL del logo</label>
+                  <input id="entity-logo" class="form-control" type="url" placeholder="https://ejemplo.com/logo.png" />
+                  <div id="entity-logo-error" class="error-message"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">2. Datos del solicitante</h2>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="client-name" class="form-label">Nombre del solicitante *</label>
+                  <input id="client-name" class="form-control" type="text" placeholder="Juan Pérez" />
+                  <div id="client-name-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="client-id" class="form-label">Identificación *</label>
+                  <input id="client-id" class="form-control" type="text" placeholder="00112345678" />
+                  <div id="client-id-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="client-phone" class="form-label">Teléfono *</label>
+                  <input id="client-phone" class="form-control" type="text" placeholder="829-555-0200" />
+                  <div id="client-phone-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="client-email" class="form-label">Correo electrónico *</label>
+                  <input id="client-email" class="form-control" type="email" placeholder="juan.perez@email.com" />
+                  <div id="client-email-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="client-address" class="form-label">Dirección *</label>
+                  <input id="client-address" class="form-control" type="text" placeholder="Calle Primavera #12, Santo Domingo" />
+                  <div id="client-address-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="client-income" class="form-label">Ingreso mensual *</label>
+                  <input id="client-income" class="form-control" type="number" min="0.01" step="0.01" placeholder="85000" />
+                  <div id="client-income-error" class="error-message"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">3. Datos generales del préstamo</h2>
+              <div class="row g-3">
+                <div class="col-12 col-md-4">
+                  <label for="loan-type" class="form-label">Tipo de préstamo *</label>
+                  <select id="loan-type" class="form-select">
+                    <option value="Préstamo personal">Préstamo personal</option>
+                    <option value="Préstamo de vehículo">Préstamo de vehículo</option>
+                    <option value="Préstamo hipotecario">Préstamo hipotecario</option>
+                    <option value="Préstamo comercial">Préstamo comercial</option>
+                    <option value="Préstamo educativo">Préstamo educativo</option>
+                  </select>
+                  <div id="loan-type-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="quote-number" class="form-label">Número de cotización *</label>
+                  <input id="quote-number" class="form-control" type="text" placeholder="COT-2026-001" />
+                  <div id="quote-number-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="loan-status" class="form-label">Estado *</label>
+                  <select id="loan-status" class="form-select">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aprobada">Aprobada</option>
+                    <option value="Rechazada">Rechazada</option>
+                    <option value="Vencida">Vencida</option>
+                  </select>
+                  <div id="loan-status-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="quote-date" class="form-label">Fecha de cotización *</label>
+                  <input id="quote-date" class="form-control" type="date" />
+                  <div id="quote-date-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="expiration-date" class="form-label">Fecha de vencimiento *</label>
+                  <input id="expiration-date" class="form-control" type="date" />
+                  <div id="expiration-date-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="loan-currency" class="form-label">Moneda *</label>
+                  <select id="loan-currency" class="form-select">
+                    <option value="DOP">DOP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                  </select>
+                  <div id="loan-currency-error" class="error-message"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">4. Condiciones financieras</h2>
+              <div class="row g-3">
+                <div class="col-12 col-md-4">
+                  <label for="requested-amount" class="form-label">Monto solicitado *</label>
+                  <input id="requested-amount" class="form-control" type="number" min="0.01" step="0.01" placeholder="500000" />
+                  <div id="requested-amount-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="down-payment" class="form-label">Pago inicial</label>
+                  <input id="down-payment" class="form-control" type="number" min="0" step="0.01" placeholder="50000" />
+                  <div id="down-payment-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="financed-amount" class="form-label">Monto financiado</label>
+                  <input id="financed-amount" class="form-control" type="text" value="0.00" readonly />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label for="annual-interest-rate" class="form-label">Tasa de interés anual (%) *</label>
+                  <input id="annual-interest-rate" class="form-control" type="number" min="0" max="100" step="0.01" placeholder="18" />
+                  <div id="annual-interest-rate-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <label for="loan-term" class="form-label">Plazo en meses *</label>
+                  <input id="loan-term" class="form-control" type="number" min="1" max="360" step="1" placeholder="24" />
+                  <div id="loan-term-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <label for="first-payment-date" class="form-label">Fecha del primer pago *</label>
+                  <input id="first-payment-date" class="form-control" type="date" />
+                  <div id="first-payment-date-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-3">
+                  <label for="amortization-type" class="form-label">Tipo de amortización *</label>
+                  <select id="amortization-type" class="form-select">
+                    <option value="Cuota fija" selected>Cuota fija</option>
+                    <option value="Capital fijo">Capital fijo</option>
+                  </select>
+                  <div id="amortization-type-error" class="error-message"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">5. Cargos adicionales y seguro</h2>
+              <div class="row g-3 align-items-center">
+                <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
+                  <div class="form-check mb-2">
+                    <input id="apply-insurance" class="form-check-input" type="checkbox" />
+                    <label for="apply-insurance" class="form-check-label">Aplicar seguro</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                  <label for="monthly-insurance-rate" class="form-label">Porcentaje de seguro mensual (%)</label>
+                  <input id="monthly-insurance-rate" class="form-control" type="number" min="0" max="100" step="0.01" placeholder="0.25" disabled />
+                  <div id="monthly-insurance-rate-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                  <label for="admin-fee" class="form-label">Comisión administrativa</label>
+                  <input id="admin-fee" class="form-control" type="number" min="0" step="0.01" placeholder="1500" />
+                  <div id="admin-fee-error" class="error-message"></div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                  <label for="admin-fee-type" class="form-label">Forma de aplicar comisión *</label>
+                  <select id="admin-fee-type" class="form-select">
+                    <option value="Cobrar como cargo inicial" selected>Cobrar como cargo inicial</option>
+                    <option value="Sumar al monto financiado">Sumar al monto financiado</option>
+                  </select>
+                  <div id="admin-fee-type-error" class="error-message"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">6. Pagos extraordinarios</h2>
+              <div id="extra-payments-container"></div>
+              <button id="btn-add-extra-payment" class="btn btn-outline-primary" type="button">
+                Agregar pago extraordinario
+              </button>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">7. Resumen de cálculos</h2>
+              <ul class="list-group summary-list">
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Monto solicitado</span>
+                  <span id="summary-requested">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Pago inicial</span>
+                  <span id="summary-down-payment">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Comisión administrativa</span>
+                  <span id="summary-admin-fee">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Monto financiado</span>
+                  <span id="summary-financed">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Monto base del préstamo</span>
+                  <span id="summary-base-amount">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Tasa de interés anual</span>
+                  <span id="summary-annual-rate">0.00%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Tasa de interés mensual</span>
+                  <span id="summary-monthly-rate">0.00%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Plazo en meses</span>
+                  <span id="summary-term">0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Cantidad de cuotas generadas</span>
+                  <span id="summary-installments-count">0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Cuota estimada inicial</span>
+                  <span id="summary-initial-installment">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total capital pagado</span>
+                  <span id="summary-total-principal">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total intereses</span>
+                  <span id="summary-total-interest">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total seguro</span>
+                  <span id="summary-total-insurance">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total pagos extraordinarios aplicados</span>
+                  <span id="summary-total-extra">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total cuotas pagadas</span>
+                  <span id="summary-total-installments-paid">DOP 0.00</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Fecha estimada de finalización</span>
+                  <span id="summary-completion-date">-</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Relación cuota / ingreso</span>
+                  <span id="summary-dti-ratio">0.00%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Nivel de endeudamiento</span>
+                  <span id="summary-risk-level">-</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between summary-total">
+                  <span>Total general a pagar</span>
+                  <span id="summary-grand-total">DOP 0.00</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="form-section mb-4">
+              <h2 class="section-title">8. Tabla de amortización</h2>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle mb-0 table-amortization">
+                  <thead class="table-primary text-center">
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha de pago</th>
+                      <th>Balance inicial</th>
+                      <th>Cuota base</th>
+                      <th>Capital</th>
+                      <th>Interés</th>
+                      <th>Seguro</th>
+                      <th>Pago extraordinario</th>
+                      <th>Cuota total</th>
+                      <th>Balance final</th>
+                    </tr>
+                  </thead>
+                  <tbody id="amortization-table-body" class="text-end">
+                    <tr>
+                      <td colspan="10" class="text-center text-muted py-3">
+                        Complete los datos de condiciones financieras para visualizar la tabla de amortización.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <div class="d-grid d-md-flex justify-content-md-end mt-4">
+              <button id="btn-generate-quote" class="btn btn-primary btn-lg" type="button">
+                Generar cotización
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <section id="generated-quote-section" class="mt-4 mb-5 d-none">
+        <h2 class="h4 mb-3">Cotización generada</h2>
+        <div id="generated-quote-container"></div>
+      </section>
+    </main>
+
+    <footer class="bg-body-tertiary text-center py-3">
+      <small>LoanQuote &copy; 2026</small>
+    </footer>
+
+    <script src="assets/js/lib/Jquery/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="assets/js/lib/toastr/toastr.min.js"></script>
+    <script src="assets/js/site/index/index_jquery.js"></script>
+  </body>
+</html>
